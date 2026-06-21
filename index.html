@@ -1,0 +1,1312 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Mi Peque ❤</title>
+    
+    <!-- Google Fonts: Elegantes y modernas -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Great+Vibes&display=swap" rel="stylesheet">
+
+    <style>
+        /* Variables del sistema de diseño */
+        :root {
+            --bg-gradient: linear-gradient(135deg, #fdf8f5 0%, #f3e8e2 50%, #e5d4cb 100%);
+            --envelope-back: #cf4a43;
+            --envelope-body: #e95f55;
+            --envelope-left: #e15349;
+            --envelope-top: #cf4a43;
+            --gold-accent: rgba(184, 134, 11, 0.4);
+            --gold-solid: #b8860b;
+            --romantic-red: #b71c1c;
+            --dark-brown: #3e2723;
+            --light-brown: #7d6d5d;
+        }
+
+        /* Reset y configuración base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+            position: fixed;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Contenedor de partículas */
+        .particles-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        /* Estilos de la partícula flotante */
+        .heart-particle {
+            position: absolute;
+            bottom: -50px;
+            pointer-events: none;
+            font-size: 1.2rem;
+            animation: floatUp 10s linear forwards;
+            user-select: none;
+            z-index: 1;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) rotate(0deg) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: var(--active-opacity, 0.6);
+            }
+            90% {
+                opacity: var(--active-opacity, 0.6);
+            }
+            100% {
+                transform: translateY(-110vh) rotate(360deg) translateX(var(--drift, 50px));
+                opacity: 0;
+            }
+        }
+
+
+        /* Estilos de la notificación */
+        .notification {
+            position: fixed;
+            top: -120px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(139, 115, 85, 0.15);
+            border: 1px solid rgba(139, 115, 85, 0.25);
+            padding: 16px 20px;
+            z-index: 1000;
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            max-width: 340px;
+            user-select: none;
+        }
+
+        .notification.show {
+            top: 20px;
+            animation: slideInBounce 0.6s ease-out;
+        }
+
+        .notification:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 45px rgba(139, 115, 85, 0.2);
+        }
+
+        .notification-content {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .notification-icon {
+            font-size: 2.2rem;
+            animation: pulse 2s infinite;
+        }
+
+        .notification-text {
+            flex: 1;
+        }
+
+        .notification-title {
+            font-weight: 600;
+            color: var(--dark-brown);
+            font-size: 0.95rem;
+            margin-bottom: 2px;
+        }
+
+        .notification-subtitle {
+            font-weight: 400;
+            color: var(--light-brown);
+            font-size: 0.85rem;
+        }
+
+        .notification-close {
+            color: #b2a496;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 4px;
+            transition: color 0.2s;
+            line-height: 1;
+        }
+
+        .notification-close:hover {
+            color: var(--romantic-red);
+        }
+
+        /* Animaciones */
+        @keyframes slideInBounce {
+            0% {
+                transform: translateY(-100px);
+                opacity: 0;
+            }
+            60% {
+                transform: translateY(10px);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        /* Contenedor principal de la carta */
+        .letter-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            z-index: 10;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        /* Estilos del sobre interactivo */
+        .letter-image {
+            position: relative;
+            width: 300px;
+            height: 250px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+
+        .letter-image:hover {
+            transform: scale(1.05);
+        }
+
+        .animated-mail {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 225px;
+            width: 300px;
+            transition: transform 0.4s ease;
+        }
+
+        .animated-mail .body {
+            position: absolute;
+            bottom: 0;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 0 150px 300px;
+            border-color: transparent transparent var(--envelope-body) transparent;
+            z-index: 2;
+        }
+
+        .animated-mail .top-fold {
+            position: absolute;
+            top: 75px;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 75px 150px 0 150px;
+            transform-origin: 50% 0%;
+            transition: transform 0.4s 0.4s, z-index 0.2s 0.4s;
+            border-color: var(--envelope-top) transparent transparent transparent;
+            z-index: 2;
+        }
+
+        .animated-mail .back-fold {
+            position: absolute;
+            bottom: 0;
+            width: 300px;
+            height: 150px;
+            background: var(--envelope-back);
+            z-index: 0;
+        }
+
+        .animated-mail .left-fold {
+            position: absolute;
+            bottom: 0;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 75px 0 75px 150px;
+            border-color: transparent transparent transparent var(--envelope-left);
+            z-index: 2;
+        }
+
+        /* Sobre - Hoja que sube al hover */
+        .animated-mail .letter {
+            left: 30px;
+            bottom: 0px;
+            position: absolute;
+            width: 240px;
+            height: 90px;
+            background: white;
+            z-index: 1;
+            overflow: hidden;
+            transition: height 0.4s 0.2s;
+            box-shadow: 0 0px 10px rgba(0,0,0,0.05);
+        }
+
+        .animated-mail .letter .letter-border {
+            height: 10px;
+            width: 100%;
+            background: repeating-linear-gradient(
+                -45deg,
+                #cb5a5e,
+                #cb5a5e 12px,
+                transparent 12px,
+                transparent 24px
+            );
+        }
+
+        .animated-mail .letter .letter-title {
+            margin-top: 15px;
+            margin-left: 12px;
+            height: 12px;
+            width: 45%;
+            background: #cb5a5e;
+            border-radius: 4px;
+            opacity: 0.7;
+        }
+
+        .animated-mail .letter .letter-context {
+            margin-top: 10px;
+            margin-left: 12px;
+            height: 10px;
+            width: 25%;
+            background: #cb5a5e;
+            border-radius: 4px;
+            opacity: 0.5;
+        }
+
+        .animated-mail .letter .letter-stamp {
+            margin-top: 20px;
+            margin-left: 170px;
+            border-radius: 50%;
+            height: 35px;
+            width: 35px;
+            background: #cb5a5e;
+            opacity: 0.35;
+        }
+
+        /* Sello de Lacre 3D en la solapa */
+        .wax-seal {
+            position: absolute;
+            top: 130px;
+            left: 130px;
+            width: 40px;
+            height: 40px;
+            background: radial-gradient(circle, #e74c3c 0%, #c0392b 60%, #962d22 100%);
+            border-radius: 50%;
+            z-index: 3;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.35), inset 0 2px 4px rgba(255,255,255,0.4), inset 0 -3px 4px rgba(0,0,0,0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-origin: center;
+        }
+
+        .wax-seal-heart {
+            color: #ffebee;
+            font-size: 20px;
+            text-shadow: -1px -1px 0 rgba(0,0,0,0.3), 1px 1px 0 rgba(255,255,255,0.2);
+            user-select: none;
+            transform: translateY(1px);
+        }
+
+        /* Sombra del sobre */
+        .shadow {
+            position: absolute;
+            top: 240px;
+            left: 50%;
+            width: 320px;
+            height: 25px;
+            transition: all 0.4s ease;
+            transform: translateX(-50%);
+            border-radius: 50%;
+            background: radial-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0), rgba(0,0,0,0));
+        }
+
+        /* Animaciones en Hover del sobre */
+        .letter-image:hover .animated-mail {
+            transform: translateY(60px);
+        }
+
+        .letter-image:hover .animated-mail .top-fold {
+            transition: transform 0.4s, z-index 0.2s;
+            transform: rotateX(180deg);
+            z-index: 0;
+        }
+
+        .letter-image:hover .animated-mail .letter {
+            height: 200px;
+        }
+
+        .letter-image:hover .shadow {
+            width: 200px;
+            opacity: 0.6;
+        }
+
+        .letter-image:hover .wax-seal {
+            opacity: 0;
+            transform: scale(0.5) rotate(-45deg);
+            pointer-events: none;
+        }
+
+        /* Instrucciones inferiores */
+        .instruction-text {
+            font-family: 'Inter', sans-serif;
+            color: var(--light-brown);
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            opacity: 0;
+            animation: fadeInInstruction 2s ease-out 1.5s forwards;
+            pointer-events: auto;
+        }
+
+        .instruction-text p {
+            margin: 0;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(139, 115, 85, 0.15);
+            transition: all 0.3s ease;
+            color: var(--dark-brown);
+            box-shadow: 0 4px 15px rgba(139, 115, 85, 0.05);
+        }
+
+        .instruction-text:hover p {
+            background: rgba(255, 255, 255, 0.85);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(139, 115, 85, 0.1);
+        }
+
+        @keyframes fadeInInstruction {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Confeti de corazones */
+        .confetti-heart {
+            position: fixed;
+            pointer-events: none;
+            z-index: 3000;
+            user-select: none;
+            animation: explodeAndFall cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+        }
+
+        @keyframes explodeAndFall {
+            0% {
+                transform: translate(-50%, -50%) scale(0) rotate(0deg);
+                opacity: 1;
+            }
+            15% {
+                transform: translate(calc(-50% + var(--x) * 0.3), calc(-50% + var(--y) * 0.3)) scale(1.2) rotate(calc(var(--rot) * 0.2));
+                opacity: 1;
+            }
+            100% {
+                transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y) + 300px)) scale(0.6) rotate(var(--rot));
+                opacity: 0;
+            }
+        }
+
+        /* Modal de la carta abierta */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.4s ease-out;
+        }
+
+        .modal.modal-show {
+            opacity: 1;
+        }
+
+        .modal-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(62, 39, 35, 0.82);
+            backdrop-filter: blur(6px);
+        }
+
+        .modal-content {
+            position: relative;
+            margin: 3% auto;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            z-index: 2001;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            padding-bottom: 30px;
+        }
+
+        .modal-content::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Botón cerrar modal */
+        .close-modal {
+            position: absolute;
+            top: 30px;
+            right: 20px;
+            background: var(--romantic-red);
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 2002;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 15px rgba(183, 28, 28, 0.4);
+            border: 2px solid white;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .close-modal:hover {
+            background: #961313;
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(183, 28, 28, 0.6);
+        }
+
+
+        /* Papel de la Carta */
+        .letter-paper {
+            background: #fdfbf7;
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(255,255,255,0.7) 0%, rgba(24df, 240, 227, 0.3) 100%),
+                linear-gradient(rgba(139, 115, 85, 0.03) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 30px;
+            padding: 60px 80px;
+            border-radius: 12px;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.35), inset 0 0 40px rgba(139, 115, 85, 0.1);
+            margin-top: 20px;
+            font-family: 'Playfair Display', serif;
+            line-height: 1.8;
+            color: var(--dark-brown);
+            transform: scale(0.7) rotateY(-15deg);
+            opacity: 0;
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 8px double rgba(139, 115, 85, 0.3);
+            position: relative;
+            cursor: pointer; /* Indica que se puede cliquear para saltar */
+        }
+
+        .letter-paper::after {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            right: 15px;
+            bottom: 15px;
+            border: 1px solid rgba(139, 115, 85, 0.15);
+            pointer-events: none;
+            border-radius: 8px;
+        }
+
+        /* Corazón Watermark */
+        .letter-watermark {
+            position: absolute;
+            top: 55%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 14rem;
+            color: rgba(207, 74, 67, 0.03);
+            pointer-events: none;
+            user-select: none;
+            z-index: 0;
+        }
+
+        .letter-paper.letter-entrance {
+            transform: scale(1) rotateY(0deg);
+            opacity: 1;
+        }
+
+        .letter-paper.letter-exit {
+            transform: scale(0.8) rotateY(15deg);
+            opacity: 0;
+        }
+
+        .letter-header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 1px solid rgba(139, 115, 85, 0.15);
+            padding-bottom: 25px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .letter-header h1 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 3rem;
+            font-weight: normal;
+            color: var(--romantic-red);
+            margin-bottom: 5px;
+        }
+
+        .letter-date {
+            font-size: 0.95rem;
+            color: var(--light-brown);
+            font-style: italic;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 0.5px;
+        }
+
+        .letter-body {
+            font-size: 1.15rem;
+            text-align: justify;
+            text-justify: inter-word;
+            position: relative;
+            z-index: 2;
+        }
+
+        .letter-body p {
+            margin-bottom: 22px;
+            min-height: 1.5em;
+        }
+
+        .greeting {
+            font-family: 'Great Vibes', cursive;
+            font-size: 2.2rem;
+            color: var(--romantic-red);
+            margin-bottom: 15px;
+            font-weight: normal;
+            display: block;
+        }
+
+        .signature {
+            font-family: 'Great Vibes', cursive;
+            font-size: 2.2rem;
+            color: var(--romantic-red);
+            margin-top: 35px;
+            margin-bottom: 0px;
+            font-style: normal;
+        }
+
+        .signature-name {
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+            color: var(--dark-brown);
+            font-size: 1.3rem;
+            letter-spacing: 2px;
+            margin-top: 5px;
+        }
+
+        /* Mensaje de amor final (Toast) */
+        .love-message {
+            position: fixed;
+            bottom: -120px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.85);
+            color: var(--romantic-red);
+            padding: 16px 36px;
+            border-radius: 40px;
+            font-family: 'Great Vibes', cursive;
+            font-size: 2.2rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(183, 28, 28, 0.12);
+            z-index: 3000;
+            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(183, 28, 28, 0.15);
+            backdrop-filter: blur(15px);
+            min-width: 250px;
+            pointer-events: none;
+        }
+
+        .love-message.show {
+            bottom: 40px;
+        }
+
+        .love-message #loveText {
+            letter-spacing: 0.5px;
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        /* Media Queries para diseño responsivo */
+        @media (max-width: 768px) {
+            body {
+                overflow: hidden;
+                width: 100vw;
+                height: 100vh;
+                position: fixed;
+            }
+
+
+            .notification {
+                right: 15px;
+                left: 15px;
+                max-width: calc(100vw - 30px);
+                padding: 12px 16px;
+            }
+
+            .notification-icon {
+                font-size: 1.8rem;
+            }
+
+            .notification-title {
+                font-size: 0.85rem;
+            }
+
+            .notification-subtitle {
+                font-size: 0.75rem;
+            }
+
+            .letter-container {
+                max-width: 280px;
+            }
+
+            .letter-image {
+                width: 200px;
+                height: 170px;
+            }
+
+            .animated-mail {
+                height: 150px;
+                width: 200px;
+            }
+
+            .animated-mail .body {
+                border-width: 0 0 100px 200px;
+            }
+
+            .animated-mail .top-fold {
+                top: 50px;
+                border-width: 50px 100px 0 100px;
+            }
+
+            .animated-mail .back-fold {
+                width: 200px;
+                height: 100px;
+            }
+
+            .animated-mail .left-fold {
+                border-width: 50px 0 50px 100px;
+            }
+
+            .animated-mail .letter {
+                left: 20px;
+                width: 160px;
+                height: 60px;
+            }
+
+            .animated-mail .letter .letter-border {
+                height: 6px;
+            }
+
+            .animated-mail .letter .letter-title {
+                margin-top: 10px;
+                margin-left: 8px;
+                height: 8px;
+            }
+
+            .animated-mail .letter .letter-context {
+                margin-top: 8px;
+                margin-left: 8px;
+                height: 7px;
+            }
+
+            .animated-mail .letter .letter-stamp {
+                margin-top: 15px;
+                margin-left: 110px;
+                height: 25px;
+                width: 25px;
+            }
+
+            .wax-seal {
+                top: 85px;
+                left: 85px;
+                width: 30px;
+                height: 30px;
+                box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+            }
+
+            .wax-seal-heart {
+                font-size: 15px;
+            }
+
+            .shadow {
+                top: 160px;
+                width: 220px;
+                height: 15px;
+            }
+
+            .letter-image:hover .animated-mail {
+                transform: translateY(40px);
+            }
+
+            .letter-image:hover .animated-mail .letter {
+                height: 130px;
+            }
+
+            .letter-image:hover .shadow {
+                width: 130px;
+            }
+
+            .letter-image:hover .wax-seal {
+                transform: scale(0.5) translateY(10px);
+            }
+
+            .instruction-text {
+                font-size: 0.8rem;
+            }
+
+            .instruction-text p {
+                padding: 8px 16px;
+            }
+
+            .modal-content {
+                width: 95%;
+                margin: 6% auto;
+                max-height: 85vh;
+            }
+
+            .letter-paper {
+                padding: 40px 30px;
+                margin-top: 10px;
+                border-width: 4px;
+            }
+
+            .letter-header {
+                margin-bottom: 25px;
+                padding-bottom: 15px;
+            }
+
+            .letter-header h1 {
+                font-size: 2.2rem;
+            }
+
+            .letter-date {
+                font-size: 0.8rem;
+            }
+
+            .letter-body {
+                font-size: 0.95rem;
+                line-height: 1.7;
+            }
+
+            .greeting {
+                font-size: 1.7rem;
+            }
+
+            .signature {
+                font-size: 1.7rem;
+                margin-top: 25px;
+            }
+
+            .signature-name {
+                font-size: 1.1rem;
+            }
+
+            .letter-watermark {
+                font-size: 8rem;
+            }
+
+            .close-modal {
+                top: 15px;
+                right: 10px;
+                width: 36px;
+                height: 36px;
+                font-size: 24px;
+            }
+
+            .love-message {
+                font-size: 1.7rem;
+                padding: 12px 24px;
+                min-width: 200px;
+                bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Contenedor para corazones flotantes -->
+    <div id="particles-container" class="particles-container"></div>
+
+    <!-- Audio de fondo -->
+    <audio id="bgMusic" loop src="Hoy_es_un_Buen_Dia.mp3"></audio>
+
+    <!-- Notificación inicial -->
+    <div id="notification" class="notification">
+        <div class="notification-content">
+            <div class="notification-icon">✉️</div>
+            <div class="notification-text">
+                <p class="notification-title">Tienes un mensaje</p>
+                <p class="notification-subtitle">Revisa tu carta especial</p>
+            </div>
+            <div class="notification-close">&times;</div>
+        </div>
+    </div>
+
+    <!-- Contenedor del Sobre y la instrucción -->
+    <div class="letter-container">
+        <div class="letter-image" id="letterContainer">
+            <div class="animated-mail">
+                <div class="back-fold"></div>
+                <div class="letter">
+                    <div class="letter-border"></div>
+                    <div class="letter-title"></div>
+                    <div class="letter-context"></div>
+                    <div class="letter-stamp"></div>
+                </div>
+                <div class="top-fold"></div>
+                <div class="body"></div>
+                <div class="left-fold"></div>
+                <!-- Sello de Lacre -->
+                <div class="wax-seal">
+                    <span class="wax-seal-heart">❤</span>
+                </div>
+            </div>
+            <div class="shadow"></div>
+        </div>
+        <div class="instruction-text">
+            <p>Haz clic en el sobre para abrir tu carta ✉️</p>
+        </div>
+    </div>
+
+    <!-- Modal de la carta abierta -->
+    <div id="letterModal" class="modal">
+        <div class="modal-overlay" id="modalOverlay"></div>
+        <div class="modal-content">
+            <span class="close-modal" id="closeModal">&times;</span>
+            <div class="letter-paper" id="letterPaper">
+                <div class="letter-watermark">❤</div>
+                <div class="letter-header">
+                    <h1 id="letterTitle">Carta para mi Peque</h1>
+                    <div class="letter-date" id="letterDate">21 de Junio, 2026</div>
+                </div>
+                <div class="letter-body" id="letterBody">
+                    <span class="greeting" id="greeting"></span>
+                    <p id="paragraph1"></p>
+                    <p id="paragraph2"></p>
+                    <p id="paragraph3"></p>
+                    <span class="signature" id="signature1"></span>
+                    <p class="signature-name" id="signature2"></p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Mensaje de amor final (Toast) -->
+    <div id="loveMessage" class="love-message">
+        <p id="loveText"></p>
+    </div>
+
+    <script>
+        // Datos de la carta
+        const letterTexts = {
+            greeting: "Mi Amor",
+            paragraph1: "Hoy, en tu cumpleaños, me llena de alegría saber que puedes celebrarlo rodeada de tus seres queridos. Aunque esta fecha coincida con otras celebraciones y no podamos estar juntos, quiero que sepas que la distancia y el trabajo nunca han logrado apagar la llama de lo que sentimos. Nuestro vínculo sigue firme, más allá de cualquier obstáculo.",
+            paragraph2: "Eres una mujer orgullosa y valiente, y cada día me inspiras a ser mejor. Me duele no haber estado físicamente contigo en tantas fechas importantes, pero quiero que sepas que mi corazón siempre ha estado a tu lado, acompañándote en silencio, soñando con el instante en que podamos abrazarnos sin relojes ni fronteras.",
+            paragraph3: "Este pequeño detalle es mi manera de detener el tiempo, de recordarte que eres mi razón de alegría y que, aunque el mundo corra, siempre habrá un espacio para nosotros, para nuestras palabras y nuestras miradas que hablan sin decir nada.",            
+            signature1: "¡Feliz cumpleaños, mi Peque!",
+            signature2: "K & V"
+        };
+
+        const loveMessageText = "Te Amo Peque ❤";
+
+        // ─── AUDIO: Música de fondo con archivo local MP3 ─────────────────────
+        const bgMusic = document.getElementById('bgMusic');
+
+        function playMusic() {
+            bgMusic.play().catch(function() {});
+        }
+
+        function pauseMusic() {
+            bgMusic.pause();
+        }
+
+
+        // Administrador de temporizadores para el efecto Typing (Elimina superposiciones y fugas)
+        const typingController = {
+            activeIntervals: [],
+            activeTimeouts: [],
+            resolveFunctions: [],
+            isTyping: false,
+            skipRequested: false,
+            
+            addInterval(id) { this.activeIntervals.push(id); },
+            addTimeout(id) { this.activeTimeouts.push(id); },
+            addResolve(fn) { this.resolveFunctions.push(fn); },
+            
+            clearAll() {
+                this.activeIntervals.forEach(id => clearInterval(id));
+                this.activeTimeouts.forEach(id => clearTimeout(id));
+                this.activeIntervals = [];
+                this.activeTimeouts = [];
+                this.resolveFunctions = [];
+                this.isTyping = false;
+                this.skipRequested = false;
+            },
+            
+            skip() {
+                if (this.isTyping && !this.skipRequested) {
+                    this.skipRequested = true;
+                    
+                    // Limpiar temporizadores de animación activa
+                    this.activeIntervals.forEach(id => clearInterval(id));
+                    this.activeTimeouts.forEach(id => clearTimeout(id));
+                    this.activeIntervals = [];
+                    this.activeTimeouts = [];
+                    
+                    // Rellenar todos los campos del modal al instante
+                    Object.keys(letterTexts).forEach(key => {
+                        const element = document.getElementById(key);
+                        if (element) element.textContent = letterTexts[key];
+                    });
+                    
+                    // Ocultar botón Skip
+                    const skipBtn = document.getElementById('skipButton');
+                    if (skipBtn) skipBtn.classList.add('hidden');
+                    
+                    // Resolver todas las promesas en espera
+                    const resolves = this.resolveFunctions;
+                    this.resolveFunctions = [];
+                    resolves.forEach(resolve => resolve());
+                    
+                    this.isTyping = false;
+                    this.skipRequested = false;
+                }
+            }
+        };
+
+        // Función para retrasos controlados en flujos asíncronos
+        function delay(ms) {
+            if (typingController.skipRequested) return Promise.resolve();
+            return new Promise((resolve) => {
+                let resolveWrapped;
+                const timeoutId = setTimeout(() => {
+                    typingController.activeTimeouts = typingController.activeTimeouts.filter(id => id !== timeoutId);
+                    typingController.resolveFunctions = typingController.resolveFunctions.filter(fn => fn !== resolveWrapped);
+                    resolve();
+                }, ms);
+                
+                resolveWrapped = () => {
+                    clearTimeout(timeoutId);
+                    resolve();
+                };
+                
+                typingController.addTimeout(timeoutId);
+                typingController.addResolve(resolveWrapped);
+            });
+        }
+
+        // Función de escritura con efecto typing
+        function typeText(elementId, text, speed = 30) {
+            const element = document.getElementById(elementId);
+            if (!element) return Promise.resolve();
+            
+            if (typingController.skipRequested) {
+                element.textContent = text;
+                return Promise.resolve();
+            }
+            
+            return new Promise((resolve) => {
+                element.textContent = '';
+                let i = 0;
+                let resolveWrapped;
+                
+                const timer = setInterval(() => {
+                    if (i < text.length) {
+                        element.textContent += text.charAt(i);
+                        i++;
+                    } else {
+                        clearInterval(timer);
+                        typingController.activeIntervals = typingController.activeIntervals.filter(id => id !== timer);
+                        typingController.resolveFunctions = typingController.resolveFunctions.filter(fn => fn !== resolveWrapped);
+                        resolve();
+                    }
+                }, speed);
+                
+                resolveWrapped = () => {
+                    clearInterval(timer);
+                    element.textContent = text;
+                    resolve();
+                };
+                
+                typingController.addInterval(timer);
+                typingController.addResolve(resolveWrapped);
+            });
+        }
+
+        // Lanzador de explosión de confeti en forma de corazones
+        function launchHeartConfetti() {
+            const container = document.body;
+            const heartSymbols = ['❤️', '💖', '💝', '💕', '💗'];
+            const count = 45;
+            
+            for (let i = 0; i < count; i++) {
+                const heart = document.createElement('div');
+                heart.classList.add('confetti-heart');
+                
+                // Centrado exacto del disparo
+                heart.style.left = '50%';
+                heart.style.top = '50%';
+                
+                // Variedad visual
+                heart.textContent = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+                heart.style.fontSize = `${Math.random() * 15 + 16}px`; // 16px a 31px
+                
+                // Dirección y velocidad aleatoria
+                const angle = Math.random() * Math.PI * 2;
+                const velocity = Math.random() * 260 + 140; // velocidad de impulso
+                const xDist = Math.cos(angle) * velocity;
+                const yDist = Math.sin(angle) * velocity - 60; // offset por gravedad
+                
+                heart.style.setProperty('--x', `${xDist}px`);
+                heart.style.setProperty('--y', `${yDist}px`);
+                heart.style.setProperty('--rot', `${Math.random() * 720 - 360}deg`);
+                
+                const duration = Math.random() * 1.5 + 1.2; // Duración
+                heart.style.animationDuration = `${duration}s`;
+                
+                container.appendChild(heart);
+                
+                // Eliminación segura del DOM
+                setTimeout(() => {
+                    heart.remove();
+                }, duration * 1000);
+            }
+        }
+
+        // Generación de partículas de fondo (Corazones y pétalos suaves)
+        function createHeart() {
+            const container = document.getElementById('particles-container');
+            if (!container) return;
+            
+            const heart = document.createElement('div');
+            heart.classList.add('heart-particle');
+            
+            const size = Math.random() * 14 + 10; // 10px a 24px
+            const startX = Math.random() * window.innerWidth;
+            const duration = Math.random() * 8 + 7; // 7s a 15s
+            const opacity = Math.random() * 0.45 + 0.15; // 0.15 a 0.6
+            
+            heart.style.width = `${size}px`;
+            heart.style.height = `${size}px`;
+            heart.style.left = `${startX}px`;
+            heart.style.opacity = opacity;
+            heart.style.animationDuration = `${duration}s`;
+            
+            // Variedad de elementos románticos flotantes
+            const types = ['❤️', '💖', '🌸', '✨'];
+            heart.textContent = types[Math.floor(Math.random() * types.length)];
+            
+            // Desplazamiento horizontal ondulante
+            heart.style.setProperty('--drift', `${Math.random() * 140 - 70}px`);
+            heart.style.setProperty('--active-opacity', opacity);
+            
+            container.appendChild(heart);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, duration * 1000);
+        }
+
+        // Iniciar generador de partículas de fondo
+        let particleInterval = null;
+        function startParticles() {
+            if (particleInterval) clearInterval(particleInterval);
+            // Spawn inicial inmediato
+            for (let i = 0; i < 8; i++) {
+                setTimeout(createHeart, Math.random() * 4000);
+            }
+            particleInterval = setInterval(createHeart, 900);
+        }
+
+        // Apertura secuencial de la carta
+        let isOpening = false;
+        async function showLetterWithTyping() {
+            const modal = document.getElementById('letterModal');
+            const letterPaper = document.getElementById('letterPaper');
+
+            // Limpieza total y reinicio
+            typingController.clearAll();
+            typingController.isTyping = true;
+            
+            // Iniciar música al abrir la carta
+            playMusic();
+
+            // Mostrar modal base
+            modal.style.display = 'block';
+            setTimeout(() => {
+                modal.classList.add('modal-show');
+            }, 10);
+            
+            // Animación de entrada de papel
+            await delay(100);
+            letterPaper.classList.add('letter-entrance');
+            
+            // Esperar transición inicial del papel
+            await delay(800);
+            
+            // Escritura automatizada párrafo por párrafo
+            await typeText('greeting', letterTexts.greeting, 40);
+            await delay(500);
+            
+            await typeText('paragraph1', letterTexts.paragraph1, 25);
+            await delay(350);
+            
+            await typeText('paragraph2', letterTexts.paragraph2, 25);
+            await delay(350);
+            
+            await typeText('paragraph3', letterTexts.paragraph3, 25);
+            await delay(350);
+            
+            await typeText('signature1', letterTexts.signature1, 35);
+            await delay(250);
+            
+            await typeText('signature2', letterTexts.signature2, 40);
+            
+            // Finalización exitosa
+            typingController.isTyping = false;
+        }
+
+        // Cierre de la carta
+        function closeLetter() {
+            const modal = document.getElementById('letterModal');
+            const letterPaper = document.getElementById('letterPaper');
+            const loveMessage = document.getElementById('loveMessage');
+
+            // Interrupción inmediata de procesos de escritura en curso
+            typingController.clearAll();
+
+            // Pausar música al cerrar la carta
+            pauseMusic();
+            
+            // Disparar animación de salida del papel
+            letterPaper.classList.add('letter-exit');
+            
+            setTimeout(() => {
+                modal.classList.remove('modal-show');
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                    letterPaper.classList.remove('letter-entrance', 'letter-exit');
+                    
+                    // Limpieza visual de textos del modal
+                    Object.keys(letterTexts).forEach(key => {
+                        const element = document.getElementById(key);
+                        if (element) element.textContent = '';
+                    });
+                    
+                    isOpening = false;
+                    
+                    // Lanzar el mensaje de amor final
+                    loveMessage.classList.add('show');
+                    typeText('loveText', loveMessageText, 100);
+                    
+                    // Desvanecer el Toast de amor tras 4 segundos
+                    setTimeout(() => {
+                        loveMessage.classList.remove('show');
+                    }, 4000);
+                }, 300);
+            }, 500);
+        }
+
+        // Mostrar notificación al cargar la página
+        window.addEventListener('load', function() {
+            startParticles();
+            setTimeout(function() {
+                document.getElementById('notification').classList.add('show');
+                
+                // Autodescarte de la notificación después de 6 segundos
+                setTimeout(() => {
+                    document.getElementById('notification').classList.remove('show');
+                }, 6000);
+            }, 1200);
+        });
+
+        // Botón de cerrar notificación
+        document.querySelector('.notification-close').addEventListener('click', function(e) {
+            e.stopPropagation();
+            document.getElementById('notification').classList.remove('show');
+        });
+
+        // La notificación misma también se puede cliquear para abrir directamente
+        document.getElementById('notification').addEventListener('click', function(e) {
+            if (e.target.classList.contains('notification-close')) return;
+            document.getElementById('notification').classList.remove('show');
+            openEnvelopeSequence();
+        });
+
+        // Secuencia unificada para abrir el sobre e iniciar la carta
+        function openEnvelopeSequence() {
+            if (isOpening || document.getElementById('letterModal').classList.contains('modal-show')) {
+                return;
+            }
+            isOpening = true;
+            document.getElementById('notification').classList.remove('show');
+            
+            // Disparar confeti al abrir la carta
+            setTimeout(() => {
+                launchHeartConfetti();
+            }, 250);
+            
+            showLetterWithTyping();
+        }
+
+        // Clic en el sobre
+        document.getElementById('letterContainer').addEventListener('click', openEnvelopeSequence);
+
+        // Cerrar modal
+        document.getElementById('closeModal').addEventListener('click', closeLetter);
+        document.getElementById('modalOverlay').addEventListener('click', closeLetter);
+
+
+    </script>
+</body>
+</html>
